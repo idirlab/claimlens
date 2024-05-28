@@ -1,0 +1,76 @@
+.loading-gif
+{
+/*	background:url('http://www.schultzlawoffice.com/img/loading/loading.gif') no-repeat center;*/
+	background:url('../img/loading.gif') no-repeat center;
+}
+
+div.editable
+{
+    height: 350px;
+    min-height: 350px;
+    max-height: 350px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    overflow-y: scroll;
+/*    font-size: 20pt;*/
+}
+
+.color_class_1
+{
+	background: #FFFFFF;
+/*	font-size: 20pt;*/
+}
+
+.color_class_2
+{
+	background: #FEEAEC;
+/*	font-size: 20pt;*/
+}
+
+.color_class_3
+{
+	background: #FCC0C5;
+/*	font-size: 20pt;*/
+}
+
+.color_class_4
+{
+	background: #FA969E;
+/*	font-size: 20pt;*/
+}
+
+.color_class_5
+{
+	background: #FA808B;
+/*	font-size: 20pt;*/
+}
+
+.color_class_6
+{
+	background: #F96B78;
+/*	font-size: 20pt;*/
+}
+
+.color_class_7
+{
+	background: #F85665;
+/*	font-size: 20pt;*/
+}
+
+.color_class_8
+{
+	background: #F74151;
+/*	font-size: 20pt;*/
+}
+
+.color_class_9
+{
+	background: #F62C3E;
+/*	font-size: 20pt;*/
+}
+
+.color_class_10
+{
+	background: #DD2838;
+/*	font-size: 20pt;*/
+}

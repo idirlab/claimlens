@@ -1,0 +1,476 @@
+$(document).ready(function () {
+    $('#optionScore').click(function () {
+        $('#divRanked').css('display', 'block');
+        $('#divRanked').parent().css('display', 'block');
+        $('#divChron').css('display', 'none');
+        $('#divChron').parent().css('display', 'none');
+        $('#divRanked').parent().css('width', '100%');
+        $('#divChron').parent().css('width', '100%');
+        
+    });
+
+    $('#optionChronological').click(function () {
+        $('#divChron').css('display', 'block');
+        $('#divChron').parent().css('display', 'block');
+        $('#divRanked').css('display', 'none');
+        $('#divRanked').parent().css('display', 'none');
+        $('#divRanked').parent().css('width', '100%');
+        $('#divChron').parent().css('width', '100%');
+
+    });
+    $("#divChron").find("span").each(function () {
+        if ($(this).data("colorclass") >= 0.5) {
+            $(this).removeClass();
+            var color_class_value = Math.ceil($(this).data("colorclass") * 10);
+            $(this).addClass("color_class_" + color_class_value);
+        }
+    });
+    var f1 = [];
+    var urlArray = window.location.href.split('/');
+    var event_id = urlArray[urlArray.length - 2];
+    $("#chart").empty();
+    $('#wordcloud').empty();
+    d3.json('/claimbuster/getTimelineJson/' + event_id, function (error, data) {
+    //d3.json('/getTimelineJson/' + event_id, function (error, data) {
+        data.forEach(function (d) {
+            if (d.score >= 0.5) {
+                f1.push(d);
+            }
+
+        });
+        $("#chart").empty();
+        if (f1.length > 0) {
+            word("0.5");
+            chart(f1);
+        }
+    });
+    $("#divChron").wrap('<div/>')
+        .css({'overflow': 'hidden'})
+        .parent()
+        .css({
+            'display': 'inline-block',
+            'overflow': 'hidden',
+            'height': function () {
+                return $('#divChron', this).height();
+            },
+            'width': function () {
+                return $('#divChron', this).width();
+            },
+            'paddingBottom': '12px',
+            'paddingRight': '12px'
+
+        }).resizable()
+        .find('#divChron')
+        .css({
+            overflow: 'auto',
+            width: '100%',
+            height: '100%'
+        });
+
+
+    $("#divRanked").wrap('<div/>')
+        .css({'overflow': 'hidden'})
+        .parent()
+        .css({
+            'display': 'none',
+            'overflow': 'hidden',
+            'height': function () {
+                return $('#divRanked', this).height();
+            },
+            'width': function () {
+                return $('#divRanked', this).width();
+            },
+            'paddingBottom': '12px',
+            'paddingRight': '12px'
+
+        }).resizable()
+        .find('#divRanked')
+        .css({
+            overflow: 'auto',
+            width: '100%',
+            height: '100%'
+        });
+
+
+    $("#table_scroll").slider({
+        value: 0.5,
+        min: 0.0,
+        max: 1.0,
+        step: 0.1,
+
+        slide: function (event, ui) {
+
+            $('.ui-slider-handle:first').html('<div class="tooltip1">' +
+                '<div class="tooltip-inner1">'+ ui.value+ '</div><div class="tooltip-arrow1"></div></div>');
+
+            //event.preventDefault();
+            var z = Math.ceil(ui.value * 10);
+            if (z == 0) {
+                z = z + 1;
+            }
+            $("#divChron > span").removeClass();
+            // $("#divChron > span").data("colorclass").addClass("color_class_"+$("#divChron > span").data("colorclass"));
+            $("#divChron").find("span").each(function () {
+                if ($(this).data("colorclass") >= ui.value) {
+                    $(this).removeClass();
+                    var color_class_value = Math.ceil($(this).data("colorclass") * 10);
+                    $(this).addClass("color_class_" + color_class_value);
+                }
+            });
+            $("#chart").innerHTML = '';
+            var f = [];
+            var urlArray = window.location.href.split('/');
+            var event_id = urlArray[urlArray.length - 2];
+            $("#chart").empty();
+            $('#wordcloud').empty();
+            d3.json('/claimbuster/getTimelineJson/' + event_id, function (error, data) {
+            //d3.json('/getTimelineJson/' + event_id, function (error, data) {
+                data.forEach(function (d) {
+                    if (d.score >= ui.value) {
+                        f.push(d);
+                    }
+
+                });
+                $("#chart").empty();
+                if (f.length > 0) {
+                    var score = Math.round(ui.value * 10) / 10;
+                    if (score == 0) {
+                        word("0.0");
+                    }
+                    else {
+                        word(score);
+                    }
+                    chart(f);
+                }
+            });
+        }
+    });
+    var x = 0;
+    var color_class_value = $("#table_scroll").slider("value") * 10;
+    var z = color_class_value - x;
+
+    $( ".ui-slider-handle" ).mouseleave(function() {
+        $('.ui-slider-handle').html("");
+    });
+    $( ".ui-slider-handle" ).mouseenter(function() {
+//var value = $( "#table_scroll" ).slider( "option", "values" );
+        $('.ui-slider-handle:first').html('<div class="tooltip1" style="border: none;"><div class="tooltip-inner1">'+ $("#table_scroll").slider("value")+ '</div><div class="tooltip-arrow1"></div></div>');
+    });
+});
+
+margin = {
+    top: 10,
+    right: 70,
+    bottom: 50,
+    left: 50
+},
+    width = $('#chart').parent().width() - margin.left - margin.right,
+    height = $('#chart').parent().width() / 1.7 - margin.top - margin.bottom;
+width_chart = width;
+height_chart = height;
+
+function chart(data) {
+
+
+    if (data.length > 0) {
+        //height = $('#wordcloud > svg').width();
+        var x = d3.scale.linear()
+            .domain([0, 2400])
+            .range([0, width]);
+
+        var y = d3.scale.linear()
+            .domain([0, 1])
+            .range([height, 0]);
+
+        var color = d3.scale.category20();
+
+        var HTMLtooltip = d3.select("div.tooltip");
+
+        var xAxis = d3.svg.axis()
+            .scale(x)
+            .ticks(10)
+            .tickSubdivide(true)
+            .tickSize(6, 3, 0)
+            .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+            .scale(y)
+            .orient("left")
+            .ticks(10, "чел.");
+
+        var svg = d3.select("#chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        var div = d3.select("#chart").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        var groups = svg.append("g");
+        var urlArray = window.location.href.split('/')
+        var event_id = urlArray[urlArray.length - 2];
+
+        data.forEach(function (d) {
+            d.sequence = +d.sequence;
+            d.score = +d.score;
+            //console.log("d.score = "+ d.score);
+        });
+
+        x.domain(d3.extent(data, function (d) {
+            return d.sequence;
+        })).nice();
+        y.domain(d3.extent(data, function (d) {
+            //console.log("Return statement d.score = "+ d.score);
+
+            return d.score;
+        })).nice();
+
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("x", width)
+            .attr("y", -6)
+            .style("text-anchor", "end")
+            .text("Sentence Sequence");
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(yAxis)
+            .append("text")
+            .attr("class", "label")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("ClaimBuster Score");
+
+        svg.selectAll(".dot")
+            .data(data)
+            .enter().append("circle");
+        var circles =
+            groups.selectAll("circle")
+                .data(data)
+                .enter().append("circle")
+                .attr("class", "circles")
+                .attr({
+                    cx: function (d) {
+                        return x(+d.sequence);
+                    },
+                    cy: function (d) {
+                        return y(+d.score);
+                    },
+                    r: 4.5,
+                    id: function (d) {
+                        return d.speaker;
+                    }
+                })
+                .style("fill", function (d) {
+                    return color(d.speaker);
+                })
+                .on("mouseover", function (d) {
+                    /*div.transition()
+                     .duration(200)
+                     .style("opacity", .9);*/
+                    HTMLtooltip.style("visibility", "visible");
+                    HTMLtooltip.html(d.text);
+                    HTMLtooltip.style("top", (d3.event.pageY + 16) + "px");
+                    HTMLtooltip.style("left", (d3.event.pageX + 16) + "px");
+                })
+                .on("mouseout", function (d) {
+                    return HTMLtooltip.style("visibility", "hidden");
+                });
+
+        var legend = svg.selectAll(".legend")
+            .data(color.domain())
+            .enter().append("g")
+            .attr("class", "legend")
+            .attr("transform", function (d, i) {
+                return "translate(0," + i * 20 + ")";
+            });
+
+        legend.append("rect")
+            .attr("x", width - 18)
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", color)
+            .attr("id", function (d) {
+                return d;
+            })
+            .on("click", function () {
+                var id1 = this.id;
+                var color = d3.select(this).attr("stroke");
+                if (color == "black") {
+                    val = "true";
+                } else {
+                    val = null;
+                }
+                var active = val ? false : true,
+                    newOpacityLeg = active ? 0.2 : 1;
+                newOpacity = active ? 0 : 1;
+                svg.selectAll(".circles")
+                    .filter(function (d) {
+                        return id1 == d.speaker;
+                    })
+                    .style("opacity", newOpacity);
+                if (newOpacity == 0) {
+                    svg.selectAll("rect")
+                        .filter(function (d) {
+                            return d == id1;
+                        })
+                        .style("opacity", newOpacityLeg)
+                        .attr("stroke", "black");
+                    svg.selectAll("line")
+                        .filter(function (d) {
+                            return d == id1;
+                        })
+                        .style("opacity", newOpacity);
+                } else {
+                    svg.selectAll("rect")
+                        .filter(function (d) {
+                            return d == id1;
+                        })
+                        .attr("stroke", "white")
+                        .style("opacity", newOpacityLeg);
+                    svg.selectAll("line")
+                        .filter(function (d) {
+                            return d == id1;
+                        })
+                        .style("opacity", newOpacity);
+                }
+            });
+
+        legend.append("line")
+            .attr("x1", width - 14)
+            .attr("y1", 9)
+            .attr("x2", width - 10)
+            .attr("y2", 12)
+            .attr("stroke-width", 2)
+            .attr("stroke", "white")
+            .attr("id", function (d) {
+                return d;
+            })
+        legend.append("line")
+            .attr("x1", width - 10)
+            .attr("y1", 13)
+            .attr("x2", width - 5)
+            .attr("y2", 3)
+            .attr("stroke-width", 2)
+            .attr("stroke", "white")
+            .attr("id", function (d) {
+                return d;
+            })
+        legend.append("text")
+            .attr("x", width + 2)
+            .attr("y", 9)
+            .attr("dy", ".35em")
+            .style("text-anchor", "left")
+            .text(function (d) {
+                return d;
+            })
+
+    }
+
+}
+
+width_cloud = $('#wordcloud').parent().width();
+height_cloud = height_chart+ margin.top + margin.bottom;
+//fill;
+function word(scrollValue) {
+    var wordScale = d3.scale.linear().range([10, 30]);
+    fill = d3.scale.category20();
+    var urlArray = window.location.href.split('/')
+    var event_id = urlArray[urlArray.length - 2]
+    d3.json('/claimbuster/getCloudJson/' + event_id + '/' + scrollValue, function (error, data) {
+    //d3.json('/getCloudJson/' + event_id + '/' + scrollValue, function (error, data) {
+        var cwords = data
+            .map(function (d) {
+                return {
+                    text: d.words,
+                    size: d.count
+                };
+            })
+            .sort(function (a, b) {
+                return d3.descending(a.size, b.size);
+            })
+
+        wordScale.domain([
+            d3.min(cwords, function (d) {
+                return d.size;
+            }),
+            d3.max(cwords, function (d) {
+                return d.size;
+            })
+        ]);
+
+        d3.layout.cloud().size([width_cloud, height_cloud])
+            .words(cwords)
+            .padding(0)
+            .font("Impact")
+            .fontSize(function (d) {
+                return wordScale(d.size);
+            })
+            .on("end", drawCloud)
+            .start();
+    });
+}
+function drawCloud(words) {
+
+    $("#wordcloud").empty();
+    d3.select("#wordcloud").append("svg")
+        .attr("width", width_cloud)
+        .attr("height", height_cloud)
+        .append("g")
+        .attr("transform", "translate(" + (width_cloud / 2) + "," + (height_cloud / 2) + ")")
+        .selectAll("text")
+        .data(words)
+        .enter().append("text")
+        .style("font-size", function (d) {
+            return d.size + "px";
+        })
+        .style("font-family", "Impact")
+        .style("fill", function (d, i) {
+            return fill(i);
+        })
+        .attr("text-anchor", "middle")
+        .attr("transform", function (d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function (d) {
+            return d.text;
+        });
+    $("#wordcloud > svg")
+        .css("box-shadow", "box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);");
+
+}
+
+function getStyle(className_) {
+
+    var styleSheets = window.document.styleSheets;
+    var styleSheetsLength = styleSheets.length;
+    for(var i = 0; i < styleSheetsLength; i++){
+        var classes = styleSheets[i].rules || styleSheets[i].cssRules;
+        if (!classes)
+            continue;
+        var classesLength = classes.length;
+        for (var x = 0; x < classesLength; x++) {
+            if (classes[x].selectorText == className_) {
+                var ret;
+                if(classes[x].cssText){
+                    ret = classes[x].cssText;
+                } else {
+                    ret = classes[x].style.cssText;
+                }
+                if(ret.indexOf(classes[x].selectorText) == -1){
+                    ret = classes[x].selectorText + "{" + ret + "}";
+                }
+                return ret;
+            }
+        }
+    }
+}

@@ -1,0 +1,104 @@
+var sequence = 1;
+
+<<<<<<< .mine
+getSentenceUpdates = function(){
+=======
+getSentenceUpdates = function(){
+    urlArray = window.location.href.split('/')
+    event_id = urlArray[urlArray.length - 2]
+>>>>>>> .r305
+    return $.ajax({
+        url: "../../getLiveUpdates/"+event_id,
+        method: "GET",
+        data: { 'sequence': sequence},
+        dataType : "json",
+        contentType: "application/json; charset=utf-8"
+    });
+}
+
+<<<<<<< .mine
+getSpeakerUpdates = function(){
+    return $.ajax({
+        url: "/claimbuster/getSpeakers/1/",
+        method: "GET",
+        dataType : "json",
+        contentType: "application/json; charset=utf-8"
+    });
+=======
+getSpeakerUpdates = function(){
+    urlArray = window.location.href.split('/')
+    event_id = urlArray[urlArray.length - 2]
+    return $.ajax({
+        url: "../../getSpeakers/"+event_id,
+        method: "GET",
+        dataType : "json",
+        contentType: "application/json; charset=utf-8"
+    });
+>>>>>>> .r305
+}
+
+triggerSentenceUpdates = function () {
+    var sentencePromise = getSentenceUpdates();
+    sentencePromise.done(onSentenceSuccess);
+}
+
+triggerSpeakerUpdates = function () {
+    var speakerPromise = getSpeakerUpdates();
+    speakerPromise.done(onSpeakerSuccess);
+}
+
+triggerUpdates = function() {
+    triggerSentenceUpdates();
+    triggerSpeakerUpdates();
+}
+
+onSentenceSuccess = function(data){
+    if(data.length > 0){
+        var liveSentences = $("#liveSentences");
+        for(i = 0; i < data.length; i++){
+            liveSentences.append('<span class="color_class_'+Math.ceil(data[i].score * 10)+'">'+parseFloat(data[i].score).toFixed(2)+'</span>'+' '+data[i].speaker+' '+':'+' '+data[i].text);
+            liveSentences.append('<br/>')
+            sequence++;
+        }
+    }
+    window.setTimeout( triggerSentenceUpdates, 5000 );
+}
+
+<<<<<<< .mine
+onSpeakerSuccess = function(data){
+    var moderators = $("#moderators"), interviewees = $("#interviewees")
+    if(data.moderators){
+        moderators.text("Moderators");
+        for(var i = 0; i < data.moderators.length; i++){
+            moderators.text(data.moderators[i]);
+        }
+    }
+    if(data.interviewees){
+        interviewees.text("Interviewees");
+        for(var j = 0; j < data.interviewees.length; j++){
+            interviewees.text(data.interviewees[j]);
+        }
+    }
+    window.setTimeout( triggerSpeakerUpdates, 5000 );
+}
+
+$(document).ready(triggerUpdates);
+=======
+onSpeakerSuccess = function(data){
+    var moderators = $("#moderators"), interviewees = $("#interviewees")
+    if(data.moderators){
+        moderators.text("Moderators");
+        for(var i = 0; i < data.moderators.length; i++){
+            moderators.text(data.moderators[i]);
+        }
+    }
+    if(data.interviewees){
+        interviewees.text("Interviewees");
+        for(var j = 0; j < data.interviewees.length; j++){
+            interviewees.text(data.interviewees[j]);
+        }
+    }
+    window.setTimeout( triggerSpeakerUpdates, 5000 );
+}
+
+$(document).ready(triggerUpdates);>>>>>>> .r305

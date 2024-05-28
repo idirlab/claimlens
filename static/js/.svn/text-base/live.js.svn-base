@@ -1,0 +1,84 @@
+var sequence = 1;
+
+getSentenceUpdates = function(){
+    urlArray = window.location.href.split('/')
+    event_id = urlArray[urlArray.length - 2]
+    return $.ajax({
+        url: "../../getLiveUpdates/"+event_id,
+        method: "GET",
+        data: { 'sequence': sequence},
+        dataType : "json",
+        contentType: "application/json; charset=utf-8"
+    });
+}
+
+getSpeakerUpdates = function(){
+    urlArray = window.location.href.split('/')
+    event_id = urlArray[urlArray.length - 2]
+    return $.ajax({
+        url: "../../getSpeakers/"+event_id,
+        method: "GET",
+        dataType : "json",
+        contentType: "application/json; charset=utf-8"
+    });
+}
+
+triggerSentenceUpdates = function () {
+    var sentencePromise = getSentenceUpdates();
+    sentencePromise.done(onSentenceSuccess);
+}
+
+triggerSpeakerUpdates = function () {
+    var speakerPromise = getSpeakerUpdates();
+    speakerPromise.done(onSpeakerSuccess);
+}
+
+triggerUpdates = function() {
+    triggerSentenceUpdates();
+//    triggerSpeakerUpdates();
+}
+
+onSentenceSuccess = function(data){
+    if(data.chron_output.length > 0){
+        var chronSentences = $("#divChron");
+        for(i = 0; i < data.chron_output.length; i++){
+            chronSentences.append('<span class="color_class_'+Math.ceil(data.chron_output[i].score * 10)+'">'+parseFloat(data.chron_output[i].score).toFixed(2)+'</span>'+' '+data.chron_output[i].text);
+            chronSentences.append('<br/>')
+            if(data.chron_output[i].sequence > sequence){
+                sequence = data.chron_output[i].sequence;
+            }
+            chronSentences.scrollTop = chronSentences.scrollHeight;
+        }
+
+        var rankedSentences = $("#divRanked");
+        for(j = 0; j < data.ranked_output.length; j++){
+            rankedSentences.append('<span class="color_class_'+Math.ceil(data.ranked_output[j].score * 10)+'">'+parseFloat(data.ranked_output[j].score).toFixed(2)+'</span>'+' '+data.ranked_output[j].text);
+            rankedSentences.append('<br/>')
+            if(data.ranked_output[j].sequence > sequence){
+                sequence = data.ranked_output[j].sequence;
+            }
+            rankedSentences.scrollTop = rankedSentences.scrollHeight;
+        }
+        sequence++;
+    }
+    window.setTimeout( triggerSentenceUpdates, 5000 );
+}
+
+onSpeakerSuccess = function(data){
+    var moderators = $("#moderators"), interviewees = $("#interviewees")
+    if(data.moderators){
+        moderators.text("Moderators");
+        for(var i = 0; i < data.moderators.length; i++){
+            moderators.text(data.moderators[i]);
+        }
+    }
+    if(data.interviewees){
+        interviewees.text("Interviewees");
+        for(var j = 0; j < data.interviewees.length; j++){
+            interviewees.text(data.interviewees[j]);
+        }
+    }
+    window.setTimeout( triggerSpeakerUpdates, 5000 );
+}
+
+$(document).ready(triggerUpdates);

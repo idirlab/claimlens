@@ -1,0 +1,63 @@
+nav
+{
+	margin-top: 1% !important;
+}
+
+.navbar-brand
+{
+	font-size: 200%;
+}
+
+.claimbuster-logo
+{
+	max-height: 70px;
+	margin-top: -35%;
+}
+
+.claimbuster-title
+{
+	padding-left: 0;
+}
+
+p
+{
+	text-align: justify;
+}
+
+.text-align-center {
+	text-align: center;
+}
+
+.jumbotron
+{
+	background-color: transparent !important;
+}
+
+.footer
+{
+	position:fixed;
+	_position:static;
+	left:0;
+	right:0;
+	bottom:0;
+	z-index:2;
+	clear:both;
+	line-height:36px;
+	text-align:center;
+	color:#b6b6b6;
+	background-color:#f8f8f8;
+	border-top:1px solid #e7e7e7;
+}
+
+.vertical-align
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
+}
+
+.rightmost-link
+{
+	padding-right: 0 !important;
+}

@@ -1,0 +1,18 @@
+.debate_list
+{
+	height: 480px !important;
+	overflow: auto;
+}
+
+.debate_list .btn
+{
+	white-space: normal;
+}
+
+#divTranscript
+{
+    height: 480px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    overflow-y: scroll;
+}

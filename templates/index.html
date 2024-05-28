@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}
+ClaimLens: Automated Live Fact-checking
+{% endblock title %}
+{% block css %}
+<link href="{{ static_url_path }}/css/index.css" rel="stylesheet" />
+{% endblock css %}
+{% block content %}
+
+<!-- TODO: change title -->
+
+<head>
+    <title>Home</title>
+</head>
+
+<body>
+    <h1 class="intro-main-header">Voting Claims Fact-Checker</h1>
+
+    <div class="image">
+        <!-- Photo by <a href="https://unsplash.com/@jontyson?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Jon Tyson</a> on <a href="https://unsplash.com/photos/white-and-black-labeled-pack-AN7CTlQaRs8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a> -->
+        <img src="{{ static_url_path }}/img/jon-tyson-cropped.jpg">
+    </div>
+    <section class="content">
+        <h2 class="intro-header">About the Project</h2>
+        <p class="intro-description">The project aims to enhance automated fact-checking by leveraging advanced frame
+            semantic parsing techniques to identify voting-related information. By employing state-of-the-art models,
+            the project seeks to efficiently and accurately analyze text data for verifying the accuracy of
+            voting-related claims and statements.</p>
+
+        <div class="intro-columns">
+            <div class="intro-column">
+                <h3 class="intro-subheader">Frame Semantic Parsing</h3>
+                <p class="intro-subdescription">Utilizing frame semantic parsing, the project deciphers intricate
+                    sentence structures and meanings. This technique is vital for grasping contextual cues in
+                    voting-related content, enhancing accurate fact-checking.</p>
+            </div>
+            <div class="intro-column">
+                <h3 class="intro-subheader">Voting-Related Information</h3>
+                <p class="intro-subdescription">Focusing on election details, candidate profiles, and voting methods,
+                    the project spotlights information crucial for trustworthy fact-checking. This specialization
+                    ensures precise identification of misinformation.</p>
+            </div>
+            <div class="intro-column">
+                <h3 class="intro-subheader">Advanced State-of-the-Art Models</h3>
+                <p class="intro-subdescription">Employing cutting-edge models, the project leverages machine learning's
+                    pinnacle. By training on extensive datasets, these models discern intricate language patterns,
+                    fortifying accurate automated fact-checking in voting contexts.</p>
+            </div>
+        </div>
+    </section>
+</body>
+
+{% endblock content %}
+{% block js %}
+<script src="{{ static_url_path }}/js/index.js"></script>
+{% endblock js %}

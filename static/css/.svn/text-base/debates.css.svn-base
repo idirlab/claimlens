@@ -1,0 +1,6 @@
+.btn-default
+{
+	text-align: left !important;
+	color: black !important;
+	white-space: normal !important;
+}

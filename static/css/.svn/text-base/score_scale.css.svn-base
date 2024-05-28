@@ -1,0 +1,124 @@
+.color_class_1
+{
+	background: #EBF0FF;/*FFFFFF;*/
+}
+
+.color_class_2
+{
+	background: #D6E0FF;/*FEEAEC;*/
+}
+
+.color_class_3
+{
+	background: #C2D1FF;/*FCC0C5;*/
+}
+
+.color_class_4
+{
+	background: #ADC2FF;/*FA969E;*/
+}
+
+.color_class_5
+{
+	background: #99B2FF;/*FA808B;*/
+}
+
+.color_class_6
+{
+	background: #85A3FF;/*F96B78;*/
+}
+
+.color_class_7
+{
+	background: #7094FF;/*F85665;*/
+}
+
+.color_class_8
+{
+	background: #5C85FF;/*F74151;*/
+}
+
+.color_class_9
+{
+	background: #4775FF;/*F62C3E;*/
+}
+
+.color_class_10
+{
+	background: #3366FF;/*DD2838;*/
+}
+
+.color_class_text_1
+{
+	color: #EBF0FF;/*FFFFFF;*/
+}
+
+.color_class_text_2
+{
+	color: #D6E0FF;/*FEEAEC;*/
+}
+
+.color_class_text_3
+{
+	color: #C2D1FF;/*FCC0C5;*/
+}
+
+.color_class_text_4
+{
+	color: #ADC2FF;/*FA969E;*/
+}
+
+.color_class_text_5
+{
+	color: #99B2FF;/*FA808B;*/
+}
+
+.color_class_text_6
+{
+	color: #85A3FF;/*F96B78;*/
+}
+
+.color_class_text_7
+{
+	color: #7094FF;/*F85665;*/
+}
+
+.color_class_text_8
+{
+	color: #5C85FF;/*F74151;*/
+}
+
+.color_class_text_9
+{
+	color: #4775FF;/*F62C3E;*/
+}
+
+.color_class_text_10
+{
+	color: #3366FF;/*DD2838;*/
+}
+
+
+genius-referent[data-genius-featured-referent]{
+    background-color: transparent;
+	cursor: pointer;
+	/*text-decoration: underline;*/
+	border-bottom: thick solid red;
+}
+.com-genius-Genius-showing genius-referent[data-genius-featured-referent][data-genius-is-highlighted] {
+    background-color:transparent;
+}
+genius-referent[data-genius-featured-referent][data-genius-hover=true]{
+	background-color:transparent;
+}
+.com-genius-Genius-showing genius-referent[data-genius-featured-referent][data-genius-hover=true], genius-referent[data-genius-featured-referent][data-genius-hover=true]{
+	background-color:transparent;
+}
+.com-genius-Genius-showing genius-referent[data-genius-featured-referent] {
+    background-color: transparent;
+}
+
+.com-genius-Genius-showing genius-referent[data-genius-featured-referent][data-genius-referent-in-progress=true] {
+    background-color: transparent;
+}
+@keyframes background_fade{0%{background-color:transparent}100%{background-color:transparent}}
