@@ -1,0 +1,87 @@
+body {
+    overflow-x: visible;
+    position: relative;
+}
+
+.main.container {
+    margin-top: 2em;
+    max-width: 70em;
+}
+
+.ui.main.container .ui.header {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.ui.main.container:first-child .ui.header {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.25em;
+    text-align: center;
+}
+
+.ui.main.container .ui.header span {
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+.main.menu {
+    margin-top: 5em;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    transition: box-shadow 0.5s ease,
+        padding 0.5s ease;
+    z-index: 981 !important;
+}
+
+.main.menu .item img.logo {
+    margin-right: 1.5em;
+}
+
+.main.menu .item::before {
+    background: unset;
+}
+
+.main.menu .item {
+    border: none !important;
+    font-weight: bolder;
+}
+
+.home-link {
+    cursor: pointer;
+}
+
+.main.menu.fixed .item:first-child::after {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    content: "ClaimLens";
+}
+
+.main.menu.fixed {
+    background-color: #FFFFFF;
+    border: 1px solid #DDD;
+    box-shadow: 0 0.2em 0.3em rgba(0, 0, 0, 0.2);
+}
+
+.main-content-container {
+    min-height: calc(100% - 500px);
+}
+
+.ui.footer.segment {
+    margin: 5em 0 0;
+    padding: 5em 0;
+}
+
+.ui.inverted.link.list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ui.inverted.link.list table {
+    width: 70%;
+}
+
+.ui.inverted.link.list td {
+    width: 50%;
+    vertical-align: top;
+}

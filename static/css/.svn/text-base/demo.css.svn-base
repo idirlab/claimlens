@@ -1,0 +1,16 @@
+.loading-gif
+{
+/*	background:url('http://www.schultzlawoffice.com/img/loading/loading.gif') no-repeat center;*/
+	background:url('../img/loading.gif') no-repeat center;
+}
+
+#divTranscript
+{
+    height: 350px;
+    min-height: 350px;
+    max-height: 350px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    overflow-y: scroll;
+/*    font-size: 20pt;*/
+}

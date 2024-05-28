@@ -1,0 +1,3 @@
+$('.customisable-highlight').each(function(){
+	this.text("Tweets worth checking");
+})

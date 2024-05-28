@@ -1,0 +1,43 @@
+{% extends "base.html" %} {% block title %} ClaimLens: Automated Live
+Fact-checking {% endblock title %} {% block css %}
+<link href="{{ static_url_path }}/css/fact-check.css" rel="stylesheet" />
+{% endblock css %} {% block content %}
+
+<!-- TODO: change title -->
+
+<head>
+    <title>Fact-Check</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="fact-check-header">Fact-Check a Claim</h1>
+        <p class="fact-check-description">
+            Input your claim below and check if it's true! See below for sample claims.
+        </p>
+
+        <h1 class="sample-claims-header">Sample Claims</h1>
+        <ul class="sample-claims-list">
+            <li>Marco Rubio voted against the bipartisan Violence Against Women Act</li>
+            <li>Congressman DeSantis voted to cut Social Security and Medicare and voted to increase the retirement age</li>
+            <li>Marsha Blackburn voted against military pay raise</li>
+
+        </ul>
+
+        <div class="ui fluid action input">
+            <input id="input-text" type="text" placeholder="Input claim here.">
+            <div class="ui button" onclick="submitForm()">Check</div>
+        </div>
+        
+        <div class='ui segment' id="loader" style='display:none'>
+            <div class="ui active inverted dimmer">
+                <div class="ui text loader">Loading</div>
+            </div>
+        </div>
+
+        <div id="results-container"></div>
+    </div>
+</body>
+{% endblock content %} {% block js %}
+<script src="{{ static_url_path }}/js/fact-check.js"></script>
+{% endblock js %}

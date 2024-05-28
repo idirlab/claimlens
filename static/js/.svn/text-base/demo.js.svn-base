@@ -1,0 +1,81 @@
+$(document).ready(function () {
+
+	var transcript = "Write/Paste your transcript here.";
+	var d;
+	
+	$('.editable').each(function(){
+		this.contentEditable = "true";
+	});
+
+	$(document).on('paste','[contenteditable]',function(e) {
+		e.preventDefault();
+		var text = (e.originalEvent || e).clipboardData.getData('text/plain') || prompt('Paste something..') || window.clipboardData.getData('Text');
+		window.document.execCommand('insertText', false, text);
+	});
+	
+	$('#divTranscript').focusin(function(){
+		if($('#divTranscript').text().localeCompare('Write/Paste your transcript here.') == 0)
+		{
+			$('#divTranscript').text('');
+		}
+	})
+
+	$('#divTranscript').focusout(function(){
+		if($('#divTranscript').text().localeCompare('') == 0)
+		{
+			$('#divTranscript').text('Write/Paste your transcript here.');
+		}
+	})
+
+	$( "#formTranscript" ).submit(function( event ) {  
+		event.preventDefault();
+		$("#divTranscript").addClass("loading-gif");
+		transcript = $("#divTranscript").html();
+		
+		text = $("#divTranscript").text();//.toLowerCase();		
+		text = text.replace(/([a-z])(\.)([A-Z])/g, "$1$2 $3");
+
+		$.ajax({
+			url: "getCFSScore",
+			method: "POST",
+			data: { transcript : text},
+			dataType: "text",
+			success: function(data)
+			{
+				data = JSON.parse(data);
+				d = data;
+				$("#divTranscript").removeClass("loading-gif");
+				$("#divTranscript").html(data.chron_output);
+				$("#divTranscript").attr("contenteditable", false);
+				$("#optionChronological").attr("disabled", false);
+				$("#optionScore").attr("disabled", false);
+				$("#buttonEdit").attr("disabled", false);
+				$("#buttonSubmit").attr("disabled", true);
+				
+				$("#optionChronological").addClass("active");
+			}
+		});
+	});
+	
+	$('#buttonEdit').click(function(){		
+		$("#divTranscript").html(transcript);		
+		$("#divTranscript").attr("contenteditable", true);
+		$("#optionChronological").attr("disabled", true);
+		$("#optionScore").attr("disabled", true);
+		$("#buttonEdit").attr("disabled", true);
+		$("#buttonSubmit").attr("disabled", false);
+		
+		$("#optionScore").removeClass("active");
+		
+		$('#divTranscript').focus();		
+	});
+	
+	$('#optionChronological').click(function(){		
+		$("#divTranscript").html(d.chron_output);				
+	});
+	
+	$('#optionScore').click(function(){		
+		$("#divTranscript").html(d.ranked_output);				
+	});
+});
+

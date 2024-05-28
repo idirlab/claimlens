@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>ClaimLens</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; connect-src 'self' https://idir.uta.edu;"> -->
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="{{ static_url_path }}img/favicon.png"> -->
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.css">
+    <link href="{{ static_url_path }}/css/base.css" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,800;0,900;1,400;1,500;1,600;1,800;1,900&display=swap"
+        rel="stylesheet">
+    {% block css %}{% endblock css %}
+</head>
+
+<body>
+    <div class="ui main text container">
+        <h1 class="ui header">ClaimLens | <span class="ui tiny text">Fact-Checking with Semantic Frames</span></h1>
+    </div>
+    <div class="ui main menu">
+        <div class="ui text container">
+            <!-- <div class="header item home-link"> -->
+                <!-- TODO: update temp logo 
+                    Credits: Icon designed by flaticon from Freepik
+                    Link: https://www.freepik.com/free-icon/verified-database-symbol-interface_738334.htm#query=lens%20with%20checkmark&position=34&from_view=search&track=ais -->
+                <a href="{{ base_url }}" class="header item">
+                    <img alt="claimlens_logo" src="{{ static_url_path }}/img/temp-logo.png">
+                </a>
+            <!-- </div> -->
+            <a href="{{ base_url }}fact-check" class="ui right floated item">Fact-Check</a>
+            <!-- <a href="{{ base_url }}acknowledgement/" class="ui right floated item">Acknowledgement</a> -->
+            <!-- <a href="{{ base_url }}src/publications.html" class="ui right floated item">Publications</a> -->
+        </div>
+    </div>
+    <div id="main-content-container" class="main ui container">
+        {% block content %}{% endblock content %}
+    </div>
+    <div class="ui inverted vertical footer segment">
+        <div class="ui center aligned container">
+            <!-- <div class="ui stackable inverted divided grid">
+                <div class="eight wide column">
+                    <h4 class="ui inverted header">Resources</h4>
+                    <div class="ui inverted link list">
+                        <table>
+                            <tr>
+                                <td>
+                                    <li>
+                                        <a href="{{ base_url }}fact-check" class="item">Fact-Check a Claim</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ base_url }}live/" class="item">Live Event Coverage</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ base_url }}debates/" class="item">U.S. Political Debates</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ base_url }}classifyfact_survey/" class="item">Data Collection</a>
+                                    </li>
+                                </td>
+
+                                <td>
+                                    <li>
+                                        <a href="{{ base_url }}api/" class="item">ClaimLens API</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://github.com/idirlab/claimspotter" class="item">GitHub</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://colab.research.google.com/github/idirlab/claimspotter/blob/master/adv_transformer/adv_transformer-notebook.ipynb"
+                                            class="item">Colab</a>
+                                    </li>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+                <div class="eight wide column">
+                    <h4 class="ui inverted header">ClaimLens</h4>
+                    <p>Automated live fact-checking for everyone.</p>
+                </div>
+            </div> -->
+            <!-- <div class="ui inverted section divider"></div> -->
+            <!-- TODO: update temp logo 
+                    Credits: Icon designed by flaticon from Freepik
+                    Link: https://www.freepik.com/free-icon/verified-database-symbol-interface_738334.htm#query=lens%20with%20checkmark&position=34&from_view=search&track=ais -->
+            <a href="{{ base_url }}">
+                <img alt="claimlens_logo" src="{{ static_url_path }}/img/temp-logo-footer.png"
+                    class="ui centered mini image home-link">
+            </a>
+            <div class="ui horizontal inverted small divided link list">
+                <a class="item email-idir" href="">
+                    <i class="fas fa-info" data-fa-transform="shrink-5"></i>d<i class="fas fa-info"
+                        data-fa-transform="shrink-5"></i>rlab<i class="fas fa-at"></i>uta<i class="fas fa-circle"
+                        data-fa-transform="shrink-10 down-2"></i>edu
+                </a>
+                <a class="item" href="{{ base_url }}claimlensr/terms/">Terms and Conditions</a>
+                <!-- TODO: update current year auto -->
+                <span class="item" href="#"><i class="far fa-copyright"></i> 2023 -
+                    <script>document.write(new Date().getFullYear());</script>
+                    The University of Texas at Arlington. All Rights Reserved.
+                </span>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+        integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.7/dist/semantic.min.js"></script>
+    <script src="{{ static_url_path }}/js/base.js"></script>
+    {% block js %}{% endblock js %}
+</body>
+
+</html>

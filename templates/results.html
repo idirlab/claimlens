@@ -1,0 +1,72 @@
+<div class="container">
+    <h1 class="results-header">Results</h1>
+    <p class="results-description">What we've found:</p>
+
+    <div id="inputSentence">{{fe_html|safe}}</div>
+    <p class="results-tips">Tip: Hover over the highlighted frame elements to view the definition.</p>
+
+    <ul class="results-list">
+        <li><strong>Frame:</strong> {{model_outputs.frame}}</li>
+        <!-- <li>Target: {{model_outputs.target}}</li> -->
+        <li><strong>Frame Elements:</strong></li>
+        <ul>
+            <li><span class="fe-agent">Agent:</span>
+                {{model_outputs.input_sentence[model_outputs.frame_elements.Agent.start:model_outputs.frame_elements.Agent.end]}}
+            </li>
+            <li><span class="fe-position">Position:</span>
+                {{model_outputs.input_sentence[model_outputs.frame_elements.Position.start:model_outputs.frame_elements.Position.end]}}
+            </li>
+            <li><span class="fe-issue">Issue:</span>
+                {{model_outputs.input_sentence[model_outputs.frame_elements.Issue.start:model_outputs.frame_elements.Issue.end]}}
+            </li>
+        </ul>
+    </ul>
+</div>
+
+<div class="ui two column doubling grid">
+    <div class="column">
+        <h1 class="results-column-header">About {{model_outputs.congress_member}}</h1>
+        <div class="ui segment">
+            {% if model_outputs.congress_member %}
+                <img src="{{ image_url }}" class="agent-image">
+                <li class="results-column-description"><strong>Member ID: </strong>{{model_outputs.member_id}}</li>
+                <p>{{agent_summary|truncate(1000, False)}}</p>
+                <a href="{{agent_url}}" target="_blank">More info</a>
+            {% else %}
+                <p>Sorry, we couldn't find any information about this congress member.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="column">
+        <h1 class="results-column-header">Related Bills</h1>
+        <!-- Use jinja to loop through each bills -->
+        <div class='bill-column'>
+            {% for bill in model_outputs.bills %}
+            <div class="ui segment">
+                <li class="results-column-description"><strong>Bill Title: </strong>{{bill.bill_title}}</li>
+                <!-- <li class="results-column-description"><strong>Bill ID:</strong> {{bill.bill_id}}</li> -->
+                <li class="results-column-description hide-long-text bill-summary"><strong>Bill Summary: </strong>{{bill.bill_summary}}</li>
+
+                {% if bill.bill_summary|length > 200 %}
+                    <a class="expand-summary" onclick="toggleSummary(this)">Show more</a>
+                {% endif %}
+
+                <hr>
+                
+                <div class="results-column-description ui two column doubling grid">
+                    <div class="column">
+                        <strong>Vote: </strong>
+                        <span class="{{ 'yea' if bill.vote_type in ['Yea', 'Aye'] else 'nay' }}">{{bill.vote_type}}</span>
+                    </div>
+                    <div class="column">
+                        <strong>Alignment: </strong>
+                        <span class="alignment alignment-{{ bill.alignment|lower }}" data-content="{{ bill.alignment_explanation }}">{{ bill.alignment }}</span>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
